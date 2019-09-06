@@ -61,7 +61,7 @@ W = sp.load_npz(adj_file).toarray()
 node_pos = np.load(node_pos_file)
 # num of nodes
 n = node_pos.shape[0]
-
+args.n_route = n
 # Calculate graph kernel
 L = scaled_laplacian(W)
 # Alternative approximation method: 1st approx - first_approx(W, n).
