@@ -144,7 +144,7 @@ def data_gen_traffic4cast(file_path, process_dir, node_pos, seq_len, horizon, da
         n_train = int(num_files * train_ratios)
         for f in files[:n_train]:
             try:
-                data_file = h5py.File(os.path.join(file_path, f), 'r')
+                data_file = h5py.File(file_path + '/' + f, 'r')
                 raw_data = data_file['array']
                 data_file.close()
                 raw_data = raw_data[data_start:]
