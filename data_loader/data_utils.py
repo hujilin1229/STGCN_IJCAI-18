@@ -143,15 +143,15 @@ def data_gen_traffic4cast(file_path, process_dir, node_pos, seq_len, horizon, da
         num_files = len(files)
         n_train = int(num_files * train_ratios)
         for f in files[:n_train]:
-            try:
-                data_file = h5py.File(file_path + '/' + f, 'r')
-                raw_data = data_file['array']
-                data_file.close()
-                raw_data = raw_data[data_start:]
-                tmp_data = seq_gen_train_traffic4cast(raw_data, horizon, seq_len+horizon, node_pos, C_0=3)
-                data_list.append(tmp_data)
-            except:
-                print(file_path + '/' + f)
+            # try:
+            data_file = h5py.File(file_path + '/' + f, 'r')
+            raw_data = data_file['array']
+            data_file.close()
+            raw_data = raw_data[data_start:]
+            tmp_data = seq_gen_train_traffic4cast(raw_data, horizon, seq_len+horizon, node_pos, C_0=3)
+            data_list.append(tmp_data)
+            # except:
+            #     print(file_path + '/' + f)
         seq_train = np.concatenate(data_list, axis=0)
         np.savez_compressed(train_data_nz_file, seq_data=seq_train)
 
