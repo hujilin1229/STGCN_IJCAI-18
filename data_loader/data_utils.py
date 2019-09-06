@@ -143,15 +143,15 @@ def data_gen_traffic4cast(file_path, process_dir, node_pos, seq_len, horizon, da
         num_files = len(files)
         n_train = int(num_files * train_ratios)
         for f in files[:n_train]:
-            # try:
-            data_file = h5py.File(file_path + '/' + f, 'r')
-            raw_data = data_file['array'].value
-            data_file.close()
-            raw_data = raw_data[data_start:]
-            tmp_data = seq_gen_train_traffic4cast(raw_data, horizon, seq_len+horizon, node_pos, C_0=3)
-            data_list.append(tmp_data)
-            # except:
-            #     print(file_path + '/' + f)
+            try:
+                data_file = h5py.File(file_path + '/' + f, 'r')
+                raw_data = data_file['array'].value
+                data_file.close()
+                raw_data = raw_data[data_start:]
+                tmp_data = seq_gen_train_traffic4cast(raw_data, horizon, seq_len+horizon, node_pos, C_0=3)
+                data_list.append(tmp_data)
+            except:
+                print(file_path + '/' + f)
         seq_train = np.concatenate(data_list, axis=0)
         np.savez_compressed(train_data_nz_file, seq_data=seq_train)
 
@@ -160,7 +160,7 @@ def data_gen_traffic4cast(file_path, process_dir, node_pos, seq_len, horizon, da
         for f in files[n_train:n_train+n_val]:
             try:
                 data_file = h5py.File(os.path.join(file_path, f), 'r')
-                raw_data = data_file['array']
+                raw_data = data_file['array'].value
                 data_file.close()
                 seq_val += [raw_data[i-seq_len:i+horizon, node_pos[:, 0], node_pos[:, 1], :] for i in val_indices]
             except:
@@ -172,7 +172,7 @@ def data_gen_traffic4cast(file_path, process_dir, node_pos, seq_len, horizon, da
         for f in files[n_train + n_val:]:
             try:
                 data_file = h5py.File(os.path.join(file_path, f), 'r')
-                raw_data = data_file['array']
+                raw_data = data_file['array'].value
                 data_file.close()
                 seq_test += [raw_data[i - seq_len:i + horizon, node_pos[:, 0], node_pos[:, 1], :] for i in val_indices]
             except:
