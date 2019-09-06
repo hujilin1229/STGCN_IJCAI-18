@@ -124,9 +124,9 @@ def data_gen_traffic4cast(file_path, process_dir, node_pos, seq_len, horizon, da
     :return: dict, dataset that contains training, validation and test with stats.
     '''
 
-    train_data_nz_file = process_dir + 'stgcn_seq{}_horizon{}_train_data.npz'.format(seq_len, horizon)
-    val_data_nz_file = process_dir + 'stgcn_seq{}_horizon{}_train_data.npz'.format(seq_len, horizon)
-    test_data_nz_file = process_dir + 'stgcn_seq{}_horizon{}_train_data.npz'.format(seq_len, horizon)
+    train_data_nz_file = process_dir + '/' + 'stgcn_seq{}_horizon{}_train_data.npz'.format(seq_len, horizon)
+    val_data_nz_file = process_dir + '/' + 'stgcn_seq{}_horizon{}_val_data.npz'.format(seq_len, horizon)
+    test_data_nz_file = process_dir + '/' +  'stgcn_seq{}_horizon{}_test_data.npz'.format(seq_len, horizon)
 
     if os.path.exists(train_data_nz_file):
         seq_train = np.load(train_data_nz_file)
