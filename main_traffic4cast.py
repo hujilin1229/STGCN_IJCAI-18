@@ -66,7 +66,7 @@ n = node_pos.shape[0]
 L = scaled_laplacian(W)
 # Alternative approximation method: 1st approx - first_approx(W, n).
 Lk = cheb_poly_approx(L, Ks, n)
-tf.add_to_collection(name='graph_kernel', value=tf.cast(tf.constant(Lk), tf.float32))
+# tf.add_to_collection(name='graph_kernel', value=tf.cast(tf.constant(Lk), tf.float32))
 
 raw_data_path = pjoin(data_path, 'train_val') #the folder contain train and validation as the data used in the paper
 
