@@ -67,7 +67,7 @@ L = scaled_laplacian(W)
 Lk = cheb_poly_approx(L, Ks, n)
 Lk_sp = sp.coo_matrix(Lk)
 
-Lk_spt = tf.SparseTensorValue(
+Lk_spt = tf.SparseTensor(
     indices=np.array([Lk_sp.row, Lk_sp.col]).T,
     values=Lk_sp.data,
     dense_shape=Lk_sp.shape)
