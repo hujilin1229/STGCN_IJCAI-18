@@ -67,10 +67,10 @@ L = scaled_laplacian(W)
 Lk = cheb_poly_approx(L, Ks, n)
 Lk_sp = sp.coo_matrix(Lk)
 
-Lk_spt = tf.SparseTensor(
+Lk_spt = tf.sparse_transpose(tf.SparseTensor(
     indices=np.array([Lk_sp.row, Lk_sp.col]).T,
     values=Lk_sp.data,
-    dense_shape=Lk_sp.shape)
+    dense_shape=Lk_sp.shape))
 
 tf.add_to_collection(name='graph_kernel', value=Lk_spt)
 

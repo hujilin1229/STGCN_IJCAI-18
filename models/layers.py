@@ -24,8 +24,8 @@ def gconv(x, theta, Ks, c_in, c_out):
     # x -> [batch_size, c_in, n_route] -> [batch_size*c_in, n_route]
     x_tmp = tf.reshape(tf.transpose(x, [0, 2, 1]), [-1, n])
     # x_mul = x_tmp * ker -> [batch_size*c_in, Ks*n_route] -> [batch_size, c_in, Ks, n_route]
-    x_tmp = tf.sparse_tensor_dense_matmul(kernel.T, x_tmp.T).T
-    x_mul = tf.reshape(tf.matmul(x_tmp, kernel), [-1, c_in, Ks, n])
+    x_tmp = tf.sparse_tensor_dense_matmul(kernel, x_tmp.T).T
+    x_mul = tf.reshape(x_tmp, [-1, c_in, Ks, n])
     # x_mul = tf.reshape(tf.matmul(x_tmp, kernel), [-1, c_in, Ks, n])
     # x_ker -> [batch_size, n_route, c_in, K_s] -> [batch_size*n_route, c_in*Ks]
     x_ker = tf.reshape(tf.transpose(x_mul, [0, 3, 1, 2]), [-1, c_in * Ks])
