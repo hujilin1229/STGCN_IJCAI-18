@@ -47,7 +47,7 @@ utcPlus3 = [57, 114, 174,222, 258]
 
 Ks, Kt = args.ks, args.kt
 # blocks: settings of channel size in st_conv_blocks / bottleneck design
-blocks = [[1, 32, 64], [64, 32, 128]]
+blocks = [[3, 32, 64], [64, 32, 128]]
 
 data_path = pjoin(args.data_dir, args.city)
 process_data_dir = pjoin(data_path, 'process_{}'.format(args.least_ratio))
