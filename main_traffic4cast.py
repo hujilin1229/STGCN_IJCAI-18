@@ -26,7 +26,6 @@ import scipy.sparse as sp
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--n_route', type=int, default=228, help='Number of Nodes')
 parser.add_argument('--horizon', type=int, default=6)
 parser.add_argument('--seq_len', type=int, default=3)
 parser.add_argument('--batch_size', type=int, default=50)
@@ -66,10 +65,10 @@ args.n_route = n
 L = scaled_laplacian(W)
 # Alternative approximation method: 1st approx - first_approx(W, n).
 Lk = cheb_poly_approx(L, Ks, n)
-Lk_sp = sp.csr_matrix(Lk)
+Lk_sp = sp.coo_matrix(Lk)
 
 Lk_spt = tf.SparseTensorValue(
-    indices=np.array([Lk_sp.rows, Lk_sp.cols]).T,
+    indices=np.array([Lk_sp.row, Lk_sp.col]).T,
     values=Lk_sp.data,
     dense_shape=Lk_sp.shape,
     type=tf.float32)
