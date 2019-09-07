@@ -45,7 +45,7 @@ def cheb_poly_approx(L, Ks, n):
         for i in range(Ks - 2):
             Ln = np.mat(2 * L * L1 - L0)
             L_list.append(np.copy(Ln))
-            L0, L1 = np.matrix(np.copy(L1)), np.matrix(np.copy(Ln))
+            L0, L1 = np.array(np.copy(L1)), np.array(np.copy(Ln))
         # L_lsit [Ks, n*n], Lk [n, Ks*n]
         return np.concatenate(L_list, axis=-1)
     elif Ks == 1:
