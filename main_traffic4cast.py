@@ -70,10 +70,9 @@ Lk_sp = sp.coo_matrix(Lk)
 Lk_spt = tf.sparse_transpose(tf.SparseTensor(
     indices=np.array([Lk_sp.row, Lk_sp.col]).T,
     values=Lk_sp.data,
-    dense_shape=Lk_sp.shape,
-    dtype=tf.float32))
+    dense_shape=Lk_sp.shape))
 
-tf.add_to_collection(name='graph_kernel', value=Lk_spt)
+tf.add_to_collection(name='graph_kernel', value=tf.cast(Lk_spt, tf.float32))
 
 raw_data_path = pjoin(data_path, 'train_val') #the folder contain train and validation as the data used in the paper
 
