@@ -26,8 +26,8 @@ import scipy.sparse as sp
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--horizon', type=int, default=6)
-parser.add_argument('--seq_len', type=int, default=3)
+parser.add_argument('--horizon', type=int, default=3)
+parser.add_argument('--seq_len', type=int, default=6)
 parser.add_argument('--batch_size', type=int, default=50)
 parser.add_argument('--epoch', type=int, default=50)
 parser.add_argument('--save', type=int, default=10)
@@ -89,5 +89,5 @@ traffic4cast_data = data_gen_traffic4cast(raw_data_path, process_data_dir, node_
 print(f'>> Loading dataset with Mean: {traffic4cast_data.mean:.2f}, STD: {traffic4cast_data.std:.2f}')
 
 if __name__ == '__main__':
-    model_train(traffic4cast_data, blocks, args)
+    model_train(traffic4cast_data, blocks, args, output_dim=3)
     model_test(traffic4cast_data, traffic4cast_data.get_len('test'), args.seq_len, args.horizon, args.inf_mode)

@@ -159,7 +159,7 @@ def st_conv_block(x, Ks, Kt, channels, scope, keep_prob, act_func='GLU'):
     return tf.nn.dropout(x_ln, keep_prob)
 
 
-def fully_con_layer(x, n, channel, scope):
+def fully_con_layer(x, n, channel, scope, o_channel=1):
     '''
     Fully connected layer: maps multi-channels to one.
     :param x: tensor, [batch_size, 1, n_route, channel].
@@ -168,13 +168,13 @@ def fully_con_layer(x, n, channel, scope):
     :param scope: str, variable scope.
     :return: tensor, [batch_size, 1, n_route, 1].
     '''
-    w = tf.get_variable(name=f'w_{scope}', shape=[1, 1, channel, 1], dtype=tf.float32)
+    w = tf.get_variable(name=f'w_{scope}', shape=[1, 1, channel, o_channel], dtype=tf.float32)
     tf.add_to_collection(name='weight_decay', value=tf.nn.l2_loss(w))
-    b = tf.get_variable(name=f'b_{scope}', initializer=tf.zeros([n, 1]), dtype=tf.float32)
+    b = tf.get_variable(name=f'b_{scope}', initializer=tf.zeros([n, o_channel]), dtype=tf.float32)
     return tf.nn.conv2d(x, w, strides=[1, 1, 1, 1], padding='SAME') + b
 
 
-def output_layer(x, T, scope, act_func='GLU'):
+def output_layer(x, T, scope, act_func='GLU', output_dim=1):
     '''
     Output layer: temporal convolution layers attach with one fully connected layer,
     which map outputs of the last st_conv block to a single-step prediction.
@@ -193,7 +193,7 @@ def output_layer(x, T, scope, act_func='GLU'):
     with tf.variable_scope(f'{scope}_out'):
         x_o = temporal_conv_layer(x_ln, 1, channel, channel, act_func='sigmoid')
     # maps multi-channels to one.
-    x_fc = fully_con_layer(x_o, n, channel, scope)
+    x_fc = fully_con_layer(x_o, n, channel, scope, o_channel=output_dim)
     return x_fc
 
 

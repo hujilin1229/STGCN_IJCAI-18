@@ -10,7 +10,7 @@ from os.path import join as pjoin
 import tensorflow as tf
 
 
-def build_model(inputs, n_his, Ks, Kt, blocks, keep_prob):
+def build_model(inputs, n_his, Ks, Kt, blocks, keep_prob, output_dim=1):
     '''
     Build the base model.
     :param inputs: placeholder.
@@ -32,7 +32,7 @@ def build_model(inputs, n_his, Ks, Kt, blocks, keep_prob):
 
     # Output Layer
     if Ko > 1:
-        y = output_layer(x, Ko, 'output_layer')
+        y = output_layer(x, Ko, 'output_layer', output_dim=output_dim)
     else:
         raise ValueError(f'ERROR: kernel size Ko must be greater than 1, but received "{Ko}".')
 

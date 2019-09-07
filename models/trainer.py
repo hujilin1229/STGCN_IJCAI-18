@@ -15,7 +15,7 @@ import numpy as np
 import time
 
 
-def model_train(inputs, blocks, args, sum_path='./output/tensorboard'):
+def model_train(inputs, blocks, args, sum_path='./output/tensorboard', output_dim=1):
     '''
     Train the base model.
     :param inputs: instance of class Dataset, data source for training.
@@ -31,7 +31,7 @@ def model_train(inputs, blocks, args, sum_path='./output/tensorboard'):
     keep_prob = tf.placeholder(tf.float32, name='keep_prob')
 
     # Define model loss
-    train_loss, pred = build_model(x, n_his, Ks, Kt, blocks, keep_prob)
+    train_loss, pred = build_model(x, n_his, Ks, Kt, blocks, keep_prob, output_dim=output_dim)
     tf.summary.scalar('train_loss', train_loss)
     copy_loss = tf.add_n(tf.get_collection('copy_loss'))
     tf.summary.scalar('copy_loss', copy_loss)
