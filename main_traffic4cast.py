@@ -70,8 +70,7 @@ Lk_sp = sp.coo_matrix(Lk)
 Lk_spt = tf.SparseTensorValue(
     indices=np.array([Lk_sp.row, Lk_sp.col]).T,
     values=Lk_sp.data,
-    dense_shape=Lk_sp.shape,
-    type=tf.float32)
+    dense_shape=Lk_sp.shape)
 
 tf.add_to_collection(name='graph_kernel', value=Lk_spt)
 
