@@ -163,7 +163,7 @@ def data_gen_traffic4cast(file_path, process_dir, node_pos, seq_len, horizon, da
                 seq_val += [raw_data[i - seq_len:i + horizon, node_pos[:, 0], node_pos[:, 1], :] for i in val_indices]
             except:
                 print(file_path + '/' + f)
-        seq_val = np.concatenate(seq_val, axis=0)
+        seq_val = np.stack(seq_val, axis=0)
         np.savez_compressed(val_data_nz_file, seq_data=seq_val)
 
     if os.path.exists(test_data_nz_file):
@@ -179,7 +179,7 @@ def data_gen_traffic4cast(file_path, process_dir, node_pos, seq_len, horizon, da
                 seq_test += [raw_data[i - seq_len:i + horizon, node_pos[:, 0], node_pos[:, 1], :] for i in val_indices]
             except:
                 print(file_path + '/' + f)
-        seq_test = np.concatenate(seq_test, axis=0)
+        seq_test = np.stack(seq_test, axis=0)
         np.savez_compressed(test_data_nz_file, seq_data=seq_test)
 
     # x_stats: dict, the stats for the train dataset, including the value of mean and standard deviation.
