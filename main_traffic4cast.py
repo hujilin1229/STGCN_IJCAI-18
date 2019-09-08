@@ -68,7 +68,7 @@ Lk = cheb_poly_approx(L, Ks, n)
 Lk_sp = sp.coo_matrix(Lk)
 
 Lk_spt = tf.sparse_transpose(tf.SparseTensorValue(
-    indices=np.array([Lk_sp.row, Lk_sp.col]).T,
+    indices=np.array([Lk_sp.row, Lk_sp.col], np.int64).T,
     values=Lk_sp.data,
     dense_shape=Lk_sp.shape))
 
