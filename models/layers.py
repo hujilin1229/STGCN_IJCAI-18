@@ -24,7 +24,7 @@ def gconv(x, theta, Ks, c_in, c_out):
     kernel_shape = tf.get_collection('graph_kernel_shape')[0]
     kernel = tf.SparseTensor(indices=kernel_indices, values=kernel_value, dense_shape=kernel_shape)
 
-    kernel = tf.transpose(kernel)
+    kernel = tf.sparse_transpose(kernel)
     n = tf.shape(kernel)[0]
     # x -> [batch_size, c_in, n_route] -> [batch_size*c_in, n_route]
     x_tmp = tf.reshape(tf.transpose(x, [0, 2, 1]), [-1, n])
