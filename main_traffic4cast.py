@@ -26,8 +26,6 @@ import scipy.sparse as sp
 import argparse
 import os
 
-os.environ["MXNET_CUDNN_AUTOTUNE_DEFAULT"] = 0
-
 parser = argparse.ArgumentParser()
 parser.add_argument('--horizon', type=int, default=3)
 parser.add_argument('--seq_len', type=int, default=6)
