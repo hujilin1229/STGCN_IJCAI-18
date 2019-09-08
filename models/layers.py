@@ -20,6 +20,7 @@ def gconv(x, theta, Ks, c_in, c_out):
     '''
     # graph kernel: tensor, [n_route, Ks*n_route]
     kernel = tf.get_collection('graph_kernel')[0]
+    kernel = tf.transpose(kernel)
     n = tf.shape(kernel)[0]
     # x -> [batch_size, c_in, n_route] -> [batch_size*c_in, n_route]
     x_tmp = tf.reshape(tf.transpose(x, [0, 2, 1]), [-1, n])
