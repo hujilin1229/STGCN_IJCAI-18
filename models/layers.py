@@ -192,10 +192,11 @@ def output_layer(x, T, scope, act_func='GLU', output_dim=1):
     '''
     _, _, n, channel = x.get_shape().as_list()
 
-    # maps multi-steps to one.
+    # Encoder: maps multi-steps to one.
     with tf.compat.v1.variable_scope(f'{scope}_in'):
         x_i = temporal_conv_layer(x, T, channel, channel, act_func=act_func)
     x_ln = layer_norm(x_i, f'layer_norm_{scope}')
+    # Decoder
     with tf.compat.v1.variable_scope(f'{scope}_out'):
         x_o = temporal_conv_layer(x_ln, 1, channel, channel, act_func='sigmoid')
     # maps multi-channels to one.

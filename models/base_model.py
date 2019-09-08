@@ -37,6 +37,8 @@ def build_model(inputs, n_his, Ks, Kt, blocks, keep_prob, output_dim=1):
 
     tf.add_to_collection(name='copy_loss',
                          value=tf.nn.l2_loss(inputs[:, n_his - 1:n_his, :, :] - inputs[:, n_his:n_his + 1, :, :]))
+
+    # here only for one step further, maybe need to change for multi-step forecasting
     train_loss = tf.nn.l2_loss(y - inputs[:, n_his:n_his + 1, :, :])
     single_pred = y[:, 0, :, :]
     tf.add_to_collection(name='y_pred', value=single_pred)
