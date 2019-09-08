@@ -27,8 +27,8 @@ def model_train(inputs, blocks, args, sum_path='./output/tensorboard', output_di
     batch_size, epoch, inf_mode, opt = args.batch_size, args.epoch, args.inf_mode, args.opt
 
     # Placeholder for model training
-    x = tf.placeholder(tf.float32, [None, n_his + n_pred, n, 3], name='data_input')
-    keep_prob = tf.placeholder(tf.float32, name='keep_prob')
+    x = tf.compat.v1.placeholder(tf.float32, [None, n_his + n_pred, n, 3], name='data_input')
+    keep_prob = tf.compat.v1.placeholder(tf.float32, name='keep_prob')
 
     # Define model loss
     train_loss, pred = build_model(x, n_his, Ks, Kt, blocks, keep_prob, output_dim=output_dim)

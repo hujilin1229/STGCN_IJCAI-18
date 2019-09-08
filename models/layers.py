@@ -23,9 +23,10 @@ def gconv(x, theta, Ks, c_in, c_out):
     kernel_value = tf.get_collection('graph_kernel_value')[0]
     kernel_shape = tf.get_collection('graph_kernel_shape')[0]
     kernel = tf.SparseTensor(indices=kernel_indices, values=kernel_value, dense_shape=kernel_shape)
+    n = tf.shape(kernel)[0]
 
     kernel = tf.sparse_transpose(kernel)
-    n = tf.shape(kernel)[0]
+
     # x -> [batch_size, c_in, n_route] -> [batch_size*c_in, n_route]
     x_tmp = tf.reshape(tf.transpose(x, [0, 2, 1]), [-1, n])
     # x_mul = x_tmp * ker -> [batch_size*c_in, Ks*n_route] -> [batch_size, c_in, Ks, n_route]
@@ -49,7 +50,7 @@ def layer_norm(x, scope):
     _, _, N, C = x.get_shape().as_list()
     mu, sigma = tf.nn.moments(x, axes=[2, 3], keep_dims=True)
 
-    with tf.variable_scope(scope):
+    with tf.compat.v1.variable_scope(scope):
         gamma = tf.get_variable('gamma', initializer=tf.ones([1, 1, N, C]))
         beta = tf.get_variable('beta', initializer=tf.zeros([1, 1, N, C]))
         _x = (x - mu) / tf.sqrt(sigma + 1e-6) * gamma + beta
@@ -155,13 +156,13 @@ def st_conv_block(x, Ks, Kt, channels, scope, keep_prob, act_func='GLU'):
     '''
     c_si, c_t, c_oo = channels
 
-    with tf.variable_scope(f'stn_block_{scope}_in'):
+    with tf.compat.v1.variable_scope(f'stn_block_{scope}_in'):
         x_s = temporal_conv_layer(x, Kt, c_si, c_t, act_func=act_func)
         x_t = spatio_conv_layer(x_s, Ks, c_t, c_t)
-    with tf.variable_scope(f'stn_block_{scope}_out'):
+    with tf.compat.v1.variable_scope(f'stn_block_{scope}_out'):
         x_o = temporal_conv_layer(x_t, Kt, c_t, c_oo)
     x_ln = layer_norm(x_o, f'layer_norm_{scope}')
-    return tf.nn.dropout(x_ln, keep_prob)
+    return tf.nn.dropout(x_ln, rate=1-keep_prob)
 
 
 def fully_con_layer(x, n, channel, scope, o_channel=1):
@@ -192,10 +193,10 @@ def output_layer(x, T, scope, act_func='GLU', output_dim=1):
     _, _, n, channel = x.get_shape().as_list()
 
     # maps multi-steps to one.
-    with tf.variable_scope(f'{scope}_in'):
+    with tf.compat.v1.variable_scope(f'{scope}_in'):
         x_i = temporal_conv_layer(x, T, channel, channel, act_func=act_func)
     x_ln = layer_norm(x_i, f'layer_norm_{scope}')
-    with tf.variable_scope(f'{scope}_out'):
+    with tf.compat.v1.variable_scope(f'{scope}_out'):
         x_o = temporal_conv_layer(x_ln, 1, channel, channel, act_func='sigmoid')
     # maps multi-channels to one.
     x_fc = fully_con_layer(x_o, n, channel, scope, o_channel=output_dim)
