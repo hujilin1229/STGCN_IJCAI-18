@@ -27,7 +27,7 @@ def model_train(inputs, blocks, args, sum_path='./output/tensorboard', output_di
     batch_size, epoch, inf_mode, opt = args.batch_size, args.epoch, args.inf_mode, args.opt
 
     # Placeholder for model training
-    x = tf.compat.v1.placeholder(tf.float32, [None, n_his + n_pred, n, 3], name='data_input')
+    x = tf.compat.v1.placeholder(tf.float32, [None, n_his + 1, n, 3], name='data_input')
     keep_prob = tf.compat.v1.placeholder(tf.float32, name='keep_prob')
 
     # Define model loss, for one step forecasting...
@@ -79,12 +79,12 @@ def model_train(inputs, blocks, args, sum_path='./output/tensorboard', output_di
             start_time = time.time()
             for j, x_batch in enumerate(
                     gen_batch(inputs.get_data('train'), batch_size, dynamic_batch=True, shuffle=True)):
-                summary, _ = sess.run([merged, train_op], feed_dict={x: x_batch[:, 0:n_his + n_pred, :, :], keep_prob: 1.0})
+                summary, _ = sess.run([merged, train_op], feed_dict={x: x_batch[:, 0:n_his + 1, :, :], keep_prob: 1.0})
                 writer.add_summary(summary, i * epoch_step + j)
                 if j % 50 == 0:
                     loss_value = \
                         sess.run([train_loss, copy_loss],
-                                 feed_dict={x: x_batch[:, 0:n_his + n_pred, :, :], keep_prob: 1.0})
+                                 feed_dict={x: x_batch[:, 0:n_his + 1, :, :], keep_prob: 1.0})
                     print(f'Epoch {i:2d}, Step {j:3d}: [model_loss: {loss_value[0]:.3f}, copy_loss: {loss_value[1]:.3f}]')
             print(f'Epoch {i:2d} Training Time {time.time() - start_time:.3f}s')
 
