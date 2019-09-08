@@ -19,7 +19,11 @@ def gconv(x, theta, Ks, c_in, c_out):
     :return: tensor, [batch_size, n_route, c_out].
     '''
     # graph kernel: tensor, [n_route, Ks*n_route]
-    kernel = tf.get_collection('graph_kernel')[0]
+    kernel_indices = tf.get_collection('graph_kernel_indices')[0]
+    kernel_value = tf.get_collection('graph_kernel_value')[0]
+    kernel_shape = tf.get_collection('graph_kernel_shape')[0]
+    kernel = tf.SparseTensor(indices=kernel_indices, values=kernel_value, dense_shape=kernel_shape)
+
     kernel = tf.transpose(kernel)
     n = tf.shape(kernel)[0]
     # x -> [batch_size, c_in, n_route] -> [batch_size*c_in, n_route]

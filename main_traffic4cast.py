@@ -67,12 +67,16 @@ L = scaled_laplacian(W)
 Lk = cheb_poly_approx(L, Ks, n)
 Lk_sp = sp.coo_matrix(Lk)
 
-Lk_spt = tf.SparseTensorValue(
-    indices=np.array([Lk_sp.row, Lk_sp.col], np.int64).T,
-    values=Lk_sp.data,
-    dense_shape=Lk_sp.shape)
+# Lk_spt = tf.SparseTensorValue(
+#     indices=np.array([Lk_sp.row, Lk_sp.col], np.int64).T,
+#     values=Lk_sp.data,
+#     dense_shape=Lk_sp.shape)
 
-tf.add_to_collection(name='graph_kernel', value=tf.cast(Lk_spt, tf.float32))
+tf.add_to_collection(name='graph_kernel_indices', value=tf.cast(tf.constant(np.array([Lk_sp.row, Lk_sp.col]).T), tf.int64))
+tf.add_to_collection(name='graph_kernel_value', value=tf.cast(tf.constant(Lk_sp.data), tf.float32))
+tf.add_to_collection(name='graph_kernel_shape', value=tf.cast(tf.constant(Lk_sp.shape), tf.int64))
+
+# tf.add_to_collection(name='graph_kernel', value=tf.cast(Lk_spt, tf.float32))
 
 raw_data_path = pjoin(data_path, 'train_val') #the folder contain train and validation as the data used in the paper
 
