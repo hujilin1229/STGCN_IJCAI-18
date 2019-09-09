@@ -87,17 +87,17 @@ def model_train(inputs, blocks, args, sum_path='./output/tensorboard', output_di
                                  feed_dict={x: x_batch[:, 0:n_his + 1, :, :], keep_prob: 1.0})
                     print(f'Epoch {i:2d}, Step {j:3d}: [model_loss: {loss_value[0]:.3f}, copy_loss: {loss_value[1]:.3f}]', flush=True)
 
-                    # for testing
-                    min_va_val, min_val = \
-                        model_inference(sess, pred, inputs, batch_size, n_his, n_pred, step_idx, min_va_val, min_val)
-                    for ix in tmp_idx:
-                        va, te = min_va_val[ix*3:(ix + 1)*3], min_val[ix*3:(ix + 1)*3]
-                        # va, te = min_va_val[ix], min_val[ix]
-                        print(f'Time Step {ix + 1}: '
-                              f'MAPE {va[0]:7.3%}, {te[0]:7.3%}; '
-                              f'MAE  {va[1]:4.3f}, {te[1]:4.3f}; '
-                              f'RMSE {va[2]:6.3f}, {te[2]:6.3f}.', flush=True)
-                    print(f'Epoch {i:2d} Inference Time {time.time() - start_time:.3f}s', flush=True)
+                    # # for testing
+                    # min_va_val, min_val = \
+                    #     model_inference(sess, pred, inputs, batch_size, n_his, n_pred, step_idx, min_va_val, min_val)
+                    # for ix in tmp_idx:
+                    #     va, te = min_va_val[ix*3:(ix + 1)*3], min_val[ix*3:(ix + 1)*3]
+                    #     # va, te = min_va_val[ix], min_val[ix]
+                    #     print(f'Time Step {ix + 1}: '
+                    #           f'MAPE {va[0]:7.3%}, {te[0]:7.3%}; '
+                    #           f'MAE  {va[1]:4.3f}, {te[1]:4.3f}; '
+                    #           f'RMSE {va[2]:6.3f}, {te[2]:6.3f}.', flush=True)
+                    # print(f'Epoch {i:2d} Inference Time {time.time() - start_time:.3f}s', flush=True)
 
             print(f'Epoch {i:2d} Training Time {time.time() - start_time:.3f}s')
 
