@@ -81,7 +81,7 @@ def model_train(inputs, blocks, args, sum_path='./output/tensorboard', output_di
                     gen_batch(inputs.get_data('train'), batch_size, dynamic_batch=True, shuffle=True)):
                 summary, _ = sess.run([merged, train_op], feed_dict={x: x_batch[:, 0:n_his + 1, :, :], keep_prob: 1.0})
                 writer.add_summary(summary, i * epoch_step + j)
-                if j % 1 == 0:
+                if j % 50 == 0:
                     loss_value = \
                         sess.run([train_loss, copy_loss],
                                  feed_dict={x: x_batch[:, 0:n_his + 1, :, :], keep_prob: 1.0})
